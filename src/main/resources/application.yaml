@@ -1,0 +1,32 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    initialization-mode: always
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/
+      database: java-test-project
+
+# Used for test, it logs queries
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: DEBUG
+        transaction: DEBUG
+        data:
+          mongodb:
+            core:
+              ReactiveMongoTemplate: DEBUG
+              MongoTemplate: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
