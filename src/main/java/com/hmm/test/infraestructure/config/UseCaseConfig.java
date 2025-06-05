@@ -1,6 +1,6 @@
 package com.hmm.test.infraestructure.config;
 
-import com.hmm.test.domain.port.PaymentRepository;
+import com.hmm.test.domain.port.PaymentRepositoryPort;
 import com.hmm.test.infraestructure.adapter.persistence.MongoPaymentRepositoryAdapter;
 import com.hmm.test.infraestructure.adapter.persistence.repository.MongoPaymentRepository;
 import com.hmm.test.infraestructure.util.PaymentMapper;
@@ -15,7 +15,7 @@ public class UseCaseConfig {
     private final MongoPaymentRepository mongoPaymentRepository;
 
     @Bean
-    public PaymentRepository paymentRepository(){
+    public PaymentRepositoryPort paymentRepository(){
         return  new MongoPaymentRepositoryAdapter(mongoPaymentRepository, paymentMapper);
     }
 
