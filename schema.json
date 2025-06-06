@@ -1,0 +1,49 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "_id",
+      "_class",
+      "concept",
+      "created_date",
+      "modified_date",
+      "mount",
+      "number_products",
+      "receiver",
+      "sender",
+      "status"
+    ],
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "_class": {
+        "bsonType": "string"
+      },
+      "concept": {
+        "bsonType": "string"
+      },
+      "created_date": {
+        "bsonType": "date"
+      },
+      "modified_date": {
+        "bsonType": "date"
+      },
+      "mount": {
+        "bsonType": "string"
+      },
+      "number_products": {
+        "bsonType": "int"
+      },
+      "receiver": {
+        "bsonType": "string"
+      },
+      "sender": {
+        "bsonType": "string"
+      },
+      "status": {
+        "bsonType": "string"
+      }
+    }
+  }
+}

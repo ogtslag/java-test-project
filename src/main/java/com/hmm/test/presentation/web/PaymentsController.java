@@ -1,24 +1,38 @@
 package com.hmm.test.presentation.web;
 
 import com.hmm.test.application.usecase.CreatePaymentUseCase;
+import com.hmm.test.application.usecase.ModifyPaymentStatusUseCase;
+import com.hmm.test.application.usecase.ReadPaymentStatusUseCase;
 import com.hmm.test.domain.model.Payment;
-import com.hmm.test.domain.port.PaymentRepositoryPort;
+import com.hmm.test.domain.request.ModifyPaymentRequest;
+import com.hmm.test.domain.responses.ResponseModel;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/payments")
 public class PaymentsController {
     private final CreatePaymentUseCase createPaymentUseCase;
+    private final ReadPaymentStatusUseCase readPaymentStatus;
+    private final ModifyPaymentStatusUseCase modifyPaymentStatusUseCase;
 
     @PostMapping("")
-    public ResponseEntity<Payment> sendPayment(@RequestBody Payment payment){
+    public ResponseEntity<ResponseModel<Payment>> sendPayment(@RequestBody Payment payment){
         var entity = createPaymentUseCase.create(payment);
+        return  ResponseEntity.ok(entity);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseModel<String>> readPaymentStatus(@PathVariable String id){
+        var entity = readPaymentStatus.readPaymentStatus(id);
+        return ResponseEntity.ok(entity);
+    }
+
+    @PutMapping("")
+    public ResponseEntity<ResponseModel<Payment>> updatePayment(@RequestBody ModifyPaymentRequest payment){
+        var entity = modifyPaymentStatusUseCase.modifyStatus(payment.getId(), payment.getStatus());
         return  ResponseEntity.ok(entity);
     }
 }

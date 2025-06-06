@@ -1,13 +1,12 @@
 package com.hmm.test.infraestructure.adapter.persistence.entity;
 
-
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 
 @Document(collection = "payments")
@@ -15,15 +14,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class PaymentDocument {
     @Id
-    public String id;
-
-    public String concept;
-
-    public Integer products;
-
-    public String sender;
-
-    public  String receiver;
+    private String id;
+    @Field("concept")
+    private String concept;
+    @Field("number_products")
+    private Integer number_products;
+    @Field("sender")
+    private String sender;
+    @Field("")
+    private String receiver;
+    @Field("mount")
+    private BigDecimal mount;
+    @Field("status")
+    private String status;
+    @Field("created_date")
+    private LocalDate created_date;
+    @Field("modified_date")
+    private LocalDate modified_date;
 }

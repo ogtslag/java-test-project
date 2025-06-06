@@ -7,6 +7,9 @@ import com.hmm.test.infraestructure.adapter.persistence.repository.MongoPaymentR
 import com.hmm.test.infraestructure.util.PaymentMapper;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+import java.util.UUID;
+
 
 @RequiredArgsConstructor
 public class MongoPaymentRepositoryAdapter implements PaymentRepositoryPort {
@@ -16,7 +19,22 @@ public class MongoPaymentRepositoryAdapter implements PaymentRepositoryPort {
     @Override
     public Payment save(Payment payment) {
         PaymentDocument document = paymentMapper.toDocument(payment);
+        System.out.println(document.toString());
         PaymentDocument savedDocument = mongoPaymentRepository.save(document);
         return paymentMapper.toModel(savedDocument);
+    }
+
+    @Override
+    public Payment findById(String id) {
+        Optional<PaymentDocument> document = mongoPaymentRepository.findById(id);
+        return  paymentMapper.toModel(document.orElseThrow());
+    }
+
+    @Override
+    public Payment modifyStatus(String id, String status) {
+        Optional<PaymentDocument> document = mongoPaymentRepository.findById(id);
+        document.orElseThrow().setStatus(status);
+        mongoPaymentRepository.save(document.orElseThrow());
+        return  paymentMapper.toModel(document.orElseThrow());
     }
 }

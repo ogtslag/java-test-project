@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface MongoPaymentRepository extends MongoRepository<PaymentDocument, UUID>{
+public interface MongoPaymentRepository extends MongoRepository<PaymentDocument, String>{
     PaymentDocument findBySender(String sender);
 }
