@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 @ToString
+@Builder
 public class StatusDocument {
     @Id
     private String id;

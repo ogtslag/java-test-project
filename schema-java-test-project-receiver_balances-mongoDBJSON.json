@@ -1,0 +1,25 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "_id",
+      "_class",
+      "amount",
+      "receiver"
+    ],
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "_class": {
+        "bsonType": "string"
+      },
+      "amount": {
+        "bsonType": "string"
+      },
+      "receiver": {
+        "bsonType": "string"
+      }
+    }
+  }
+}

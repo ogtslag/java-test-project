@@ -16,10 +16,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
 public class MongoConfig {
-    @Bean
-    public MongoClient mongoClient() {
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .build();
-        return MongoClients.create(settings);
-    }
+//    @Bean
+//    public MongoClient mongoClient() {
+//        MongoClientSettings settings = MongoClientSettings.builder()
+//                .build();
+//        return MongoClients.create(settings);
+//    }
 }

@@ -1,0 +1,49 @@
+networks:
+  app_network:
+    driver: bridge
+services:
+  app:
+    build: .
+    image: 'heribertoMontoya/java-test-project:0.1'
+    container_name: 'java-app'
+    ports:
+      - "8001:8001"
+    environment:
+      SPRING_DATA_MONGODB_URI: 'mongodb://mongo-server:27017/'
+      SPRING_DATA_MONGODB_DATABASE: 'java-test-project'
+      SPRING_RABBITMQ_HOST: 'rabbit-server'
+      SPRING_RABBITMQ_PORT: '5672'
+      SPRING_RABBITMQ_USERNAME: 'guest'
+      SPRING_RABBITMQ_PASSWORD: 'guest'
+    depends_on:
+      - mongo-server
+      - rabbit-server
+    networks:
+      - app_network
+  mongo-server:
+    image: 'mongodb/mongodb-community-server:8.0.9-ubi8'
+    container_name: 'mongo_container'
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app_network
+  rabbit-server:
+    image: 'rabbitmq:3-management'
+    container_name: 'rabbitmq_container'
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: 'guest'
+      RABBITMQ_DEFAULT_PASS: 'guest'
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitmq_logs:/var/log/rabbitmq
+    networks:
+      - app_network
+volumes:
+  mongo_data:
+  rabbitmq_data:
+  rabbitmq_logs:

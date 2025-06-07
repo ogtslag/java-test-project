@@ -19,7 +19,7 @@ public class RabbitMQPaymentProcessedProducer {
         String routingKey = "routing.payments.processed";
         rabbitTemplate.convertAndSend(
                 RabbitMQPaymentConfig.QUEUE_NAME_PROCESSED,
-                gson.toJson(paymentMapper.toPaymentUpdate(payment))
+                gson.toJson(payment)
         );
     }
 }

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @Builder
+@With
 public class Payment {
     private String id;
     private String concept;
