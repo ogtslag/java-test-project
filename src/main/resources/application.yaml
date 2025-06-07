@@ -15,6 +15,9 @@ spring:
     port: "${SPRING_RABBITMQ_PORT:5672}"
     username: "${SPRING_RABBITMQ_USERNAME:guest}"
     password: "${SPRING_RABBITMQ_PASSWORD:guest}"
+my:
+  app:
+    pass_smtp: "${PASS_SMTP}"
 
 # Used for test, it logs queries
 logging:

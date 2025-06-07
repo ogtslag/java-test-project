@@ -7,13 +7,40 @@
 	},
 	"item": [
 		{
-			"name": "Payments",
+			"name": "1 - Create Payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code == 200) {\r",
+							"    try {\r",
+							"        \r",
+							"        const responseJson = pm.response.json();\r",
+							"        const paymentId = responseJson.details.id; \r",
+							"        pm.globals.set(\"paymentId\", paymentId);\r",
+							"\r",
+							"        \r",
+							"        console.log(\"paymentId guardado en variable global:\", pm.globals.get(\"paymentId\"));\r",
+							"\r",
+							"    } catch (e) {\r",
+							"        console.error(\"Error al parsear la respuesta JSON o al guardar la variable:\", e);\r",
+							"    }\r",
+							"} else {\r",
+							"    console.warn(\"La solicitud no fue exitosa. Código de estado:\", pm.response.code);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"concept\":\"Concepto de pago mensualidad\",\r\n    \"number_products\":1,\r\n    \"mount\":1500,\r\n    \"sender\":\"Heriberto Montoya\",\r\n    \"receiver\":\"Jose Luis Corpus\",\r\n    \"email_receiver\":\"developitl@gmail.com\",\r\n    \"status\":\"PENDING\",\r\n    \"created_date\":\"2025-01-01\",\r\n    \"modified_date\":\"2025-01-01\"\r\n}",
+					"raw": "{\r\n    \"concept\":\"Concepto de pago mensualidad 1\",\r\n    \"number_products\":1,\r\n    \"mount\":300,\r\n    \"sender\":\"Heriberto Montoya\",\r\n    \"receiver\":\"Carlos Montoya\",\r\n    \"email_receiver\":\"developitl@gmail.com\",\r\n    \"status\":\"PENDING\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -36,13 +63,13 @@
 			"response": []
 		},
 		{
-			"name": "Payments Update",
+			"name": "2 - Update Payment IN_PROCESS",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\":\"6843b07ad2cbfebe51bc6116\",\r\n    \"status\":\"PROCESSED\"\r\n}",
+					"raw": "{\r\n    \"id\":\"{{paymentId}}\",\r\n    \"status\":\"IN_PROCESS\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -65,7 +92,7 @@
 			"response": []
 		},
 		{
-			"name": "Payments Status",
+			"name": "3 - Payment Status",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -82,7 +109,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8001/api/payments/68426f9e5b90e85182213c0f",
+					"raw": "http://localhost:8001/api/payments/{{paymentId}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -91,11 +118,62 @@
 					"path": [
 						"api",
 						"payments",
-						"68426f9e5b90e85182213c0f"
+						"{{paymentId}}"
 					]
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "4 - Update Payment PROCESSED",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"{{paymentId}}\",\r\n    \"status\":\"PROCESSED\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/api/payments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"payments"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.globals.set(\"variable_key\", \"variable_value\");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

@@ -1,14 +1,19 @@
 package com.hmm.test.infraestructure.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
 @Configuration
+@RequiredArgsConstructor
 public class EmailConfig {
+    private final Environment env;
+
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -16,7 +21,7 @@ public class EmailConfig {
         mailSender.setPort(587);
 
         mailSender.setUsername("testheriberto@gmail.com");
-        mailSender.setPassword("");
+        mailSender.setPassword(env.getProperty("my.app.pass_smtp"));
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

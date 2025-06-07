@@ -15,9 +15,12 @@ services:
       SPRING_RABBITMQ_PORT: '5672'
       SPRING_RABBITMQ_USERNAME: 'guest'
       SPRING_RABBITMQ_PASSWORD: 'guest'
+      PASS_SMTP: 'pass_email'
     depends_on:
-      - mongo-server
-      - rabbit-server
+      mongo-server:
+        condition: service_started
+      rabbit-server:
+          condition: service_healthy
     networks:
       - app_network
   mongo-server:
@@ -38,6 +41,12 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: 'guest'
       RABBITMQ_DEFAULT_PASS: 'guest'
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "check_port_connectivity" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
       - rabbitmq_logs:/var/log/rabbitmq
