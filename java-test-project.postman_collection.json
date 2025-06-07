@@ -1,0 +1,101 @@
+{
+	"info": {
+		"_postman_id": "0acdeb9b-dd8f-4672-a2d3-5a53567038cc",
+		"name": "java-test-project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3462811"
+	},
+	"item": [
+		{
+			"name": "Payments",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"concept\":\"Concepto de pago mensualidad\",\r\n    \"number_products\":1,\r\n    \"mount\":1500,\r\n    \"sender\":\"Heriberto Montoya\",\r\n    \"receiver\":\"Jose Luis Corpus\",\r\n    \"email_receiver\":\"developitl@gmail.com\",\r\n    \"status\":\"PENDING\",\r\n    \"created_date\":\"2025-01-01\",\r\n    \"modified_date\":\"2025-01-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/api/payments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payments Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"6843b07ad2cbfebe51bc6116\",\r\n    \"status\":\"PROCESSED\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/api/payments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payments Status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"concept\":\"Algo\",\r\n    \"products\":1,\r\n    \"sender\":\"yo\",\r\n    \"receiver\":\"el\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/api/payments/68426f9e5b90e85182213c0f",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"payments",
+						"68426f9e5b90e85182213c0f"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
