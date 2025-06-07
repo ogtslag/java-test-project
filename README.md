@@ -12,8 +12,11 @@ A list of technologies used within the project:
 ***
 A little intro about the installation.
 ```
-$ git clonehttps://github.com/ogtslag/java-test-project.git
+$ git clone https://github.com/ogtslag/java-test-project.git
 $ cd java-test-project
-$ docker build . -t heribertoMontoya/java-test-project
+$ docker-compose up -d
+
+![Pruebas Junit](./tests.png)
+
 
 
