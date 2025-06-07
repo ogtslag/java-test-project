@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/payments")
@@ -20,19 +22,25 @@ public class PaymentsController {
 
     @PostMapping("")
     public ResponseEntity<ResponseModel<Payment>> sendPayment(@RequestBody Payment payment){
+        if(payment == null) return  ResponseEntity.badRequest().build();
         var entity = createPaymentUseCase.create(payment);
         return  ResponseEntity.ok(entity);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseModel<String>> readPaymentStatus(@PathVariable String id){
+        if(id == null) return ResponseEntity.badRequest().build();
+
         var entity = readPaymentStatus.readPaymentStatus(id);
         return ResponseEntity.ok(entity);
     }
 
     @PutMapping("")
     public ResponseEntity<ResponseModel<Payment>> updatePayment(@RequestBody ModifyPaymentRequest payment){
+        if(payment == null)
+            return  ResponseEntity.badRequest().build();
+
         var entity = modifyPaymentStatusUseCase.modifyStatus(payment.getId(), payment.getStatus());
-        return  ResponseEntity.ok(entity);
+        return ResponseEntity.status(entity.getStatusCode()).body(entity);
     }
 }

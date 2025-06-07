@@ -10,6 +10,11 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/
       database: java-test-project
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 # Used for test, it logs queries
 logging:

@@ -25,16 +25,19 @@ public class MongoPaymentRepositoryAdapter implements PaymentRepositoryPort {
     }
 
     @Override
-    public Payment findById(String id) {
+    public Optional<Payment> findById(String id) {
         Optional<PaymentDocument> document = mongoPaymentRepository.findById(id);
-        return  paymentMapper.toModel(document.orElseThrow());
+        return document.map(paymentMapper::toModel);
     }
 
     @Override
-    public Payment modifyStatus(String id, String status) {
+    public Optional<Payment> modifyStatus(String id, String status) {
         Optional<PaymentDocument> document = mongoPaymentRepository.findById(id);
-        document.orElseThrow().setStatus(status);
-        mongoPaymentRepository.save(document.orElseThrow());
-        return  paymentMapper.toModel(document.orElseThrow());
+        if(document.isPresent()) {
+            document.get().setStatus(status);
+            mongoPaymentRepository.save(document.get());
+            return Optional.of(paymentMapper.toModel(document.get()));
+        }
+        return Optional.empty();
     }
 }
