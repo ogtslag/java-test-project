@@ -16,6 +16,7 @@ public class Payment {
     private Integer number_products;
     private String sender;
     private String receiver;
+    private String email_receiver;
     private BigDecimal mount;
     private String status;
     private LocalDate created_date = LocalDate.now();

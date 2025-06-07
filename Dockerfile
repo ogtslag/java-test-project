@@ -20,7 +20,7 @@ COPY pom.xml .
 # Descarga las dependencias del proyecto (solo si el pom.xml/build.gradle ha cambiado)
 # Esto optimiza el caché de Docker
 RUN mvn dependency:go-offline
-# Si usas Gradle: RUN gradle build --continue --no-daemon -x test
+
 
 # Copia el código fuente del proyecto
 COPY src ./src
@@ -45,7 +45,7 @@ ARG JAR_FILE=/app/target/*.jar
 COPY --from=build ${JAR_FILE} app.jar
 
 # Expone el puerto en el que la aplicación Spring Boot se ejecutará (por defecto 8080)
-EXPOSE 8080
+EXPOSE 8001
 
 # Define el comando para ejecutar la aplicación cuando el contenedor se inicie
 ENTRYPOINT ["java", "-jar", "app.jar"]

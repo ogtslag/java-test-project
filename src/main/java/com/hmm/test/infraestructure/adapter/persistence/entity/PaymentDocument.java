@@ -18,20 +18,30 @@ import java.time.LocalDate;
 public class PaymentDocument {
     @Id
     private String id;
+
     @Field("concept")
     private String concept;
+
     @Field("number_products")
     private Integer number_products;
+
     @Field("sender")
     private String sender;
-    @Field("")
+
+    @Field("receiver")
     private String receiver;
+
+    private String email_receiver;
+
     @Field("mount")
     private BigDecimal mount;
+
     @Field("status")
     private String status;
+
     @Field("created_date")
     private LocalDate created_date;
+
     @Field("modified_date")
     private LocalDate modified_date;
 }

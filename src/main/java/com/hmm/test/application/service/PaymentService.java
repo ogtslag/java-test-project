@@ -8,16 +8,22 @@ import com.hmm.test.domain.model.Status;
 import com.hmm.test.domain.port.StatusRepositoryPort;
 import com.hmm.test.domain.responses.ResponseModel;
 import com.hmm.test.domain.port.PaymentRepositoryPort;
-import com.hmm.test.infraestructure.adapter.persistence.messagebroker.RabbitMQProducer;
+import com.hmm.test.infraestructure.adapter.messagebroker.payment.RabbitMQPaymentProducer;
+import com.hmm.test.infraestructure.adapter.messagebroker.paymentproccesed.RabbitMQPaymentProcessedProducer;
+import com.hmm.test.infraestructure.adapter.messagebroker.paymentupdate.RabbitMQPaymentUpdateProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class PaymentService implements CreatePaymentUseCase, ReadPaymentStatusUseCase, ModifyPaymentStatusUseCase {
     private final PaymentRepositoryPort paymentRepositoryPort;
     private final StatusRepositoryPort statusRepositoryPort;
-    private final RabbitMQProducer rabbitMQProducer;
+    private final RabbitMQPaymentProducer rabbitMQProducer;
+    private final RabbitMQPaymentUpdateProducer rabbitMQPaymentUpdateProducer;
+    private final RabbitMQPaymentProcessedProducer rabbitMQPaymentProcessedProducer;
 
     @Override
     public ResponseModel<Payment> create(Payment payment) {
@@ -58,11 +64,39 @@ public class PaymentService implements CreatePaymentUseCase, ReadPaymentStatusUs
             return  response;
         }
 
+        var paymentStatus = paymentRepositoryPort.findById(id);
+
+        if(paymentStatus.isPresent()){
+            if(Objects.equals(paymentStatus.get().getStatus(), status)){
+                response.setStatusCode(400);
+                response.setMessage("Invalid status: status cant be the same");
+                return  response;
+            }
+
+            if(Objects.equals(paymentStatus.get().getStatus(), "IN_PROCESS") && Objects.equals(status, "PENDING")){
+                response.setStatusCode(400);
+                response.setMessage("Invalid status: status cant be changed");
+                return  response;
+            }
+
+            if(Objects.equals(paymentStatus.get().getStatus(), "PROCESSED") && (Objects.equals(status, "PENDING") || Objects.equals(status, "IN_PROCESS"))){
+                response.setStatusCode(400);
+                response.setMessage("Invalid status: status cant be changed");
+                return  response;
+            }
+        }
+
         var payment = paymentRepositoryPort.modifyStatus(id,status);
         if(payment.isPresent()) {
             response.setDetails(payment.get());
             response.setStatusCode(200);
             response.setMessage("Status payment modified successfully");
+
+            rabbitMQPaymentUpdateProducer.sendMessagePaymentUpdate(payment.get());
+
+            if(Objects.equals(status, "PROCESSED")){
+                rabbitMQPaymentProcessedProducer.sendMessagePaymentProcessed(payment.get());
+            }
         }
         else {
             response.setStatusCode(404);
